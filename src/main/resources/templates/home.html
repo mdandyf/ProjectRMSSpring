@@ -1,0 +1,10 @@
+<html xmlns:th = "http://www.thymeleaf.org" >
+    <head>
+
+    </head>
+    <body>
+        <h1 th:inline = "text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <h3>Welcome to the RMS Home Page</h3>
+        <h4>Please click <a th:href = "@{/hello}">here</a> for Login</h4>
+    </body>
+</html>
