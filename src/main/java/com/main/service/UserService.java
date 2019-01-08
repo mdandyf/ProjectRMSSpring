@@ -1,7 +1,7 @@
-package service;
+package com.main.service;
 
-import model.User;
-import model.UserDetails;
+import com.main.model.User;
+import com.main.model.UserDetails;
 
 public interface UserService {
     void saveUser(User user, Long idRole);

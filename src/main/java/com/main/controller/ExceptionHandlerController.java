@@ -1,7 +1,7 @@
-package controller;
+package com.main.controller;
 
-import exception.ConnectionProblemException;
-import exception.UserNotFoundException;
+import com.main.exception.ConnectionProblemException;
+import com.main.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +16,6 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(value = ConnectionProblemException.class)
     public ResponseEntity<Object> exceptionConnectionProblem(ConnectionProblemException exception) {
-        return new ResponseEntity<Object>("Cannot connect to service", HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<Object>("Cannot connect to com.main.service", HttpStatus.EXPECTATION_FAILED);
     }
 }

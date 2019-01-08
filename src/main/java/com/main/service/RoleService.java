@@ -1,6 +1,6 @@
-package service;
+package com.main.service;
 
-import model.Role;
+import com.main.model.Role;
 
 public interface RoleService {
     void saveRole(Role role);

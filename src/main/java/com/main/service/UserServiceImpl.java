@@ -1,20 +1,21 @@
-package service;
+package com.main.service;
 
-import model.Privilege;
-import model.Role;
-import model.User;
-import model.UserDetails;
+import com.main.model.Privilege;
+import com.main.model.Role;
+import com.main.model.User;
+import com.main.model.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import repository.PrivilegeRepository;
-import repository.RoleRepository;
-import repository.UserRepository;
+import com.main.repository.PrivilegeRepository;
+import com.main.repository.RoleRepository;
+import com.main.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+@Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
@@ -24,6 +25,8 @@ public class UserServiceImpl implements UserService {
     PrivilegeRepository privilegeRepository;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserServiceImpl() {}
 
     @Override
     public void saveUser(User user, Long idRole) {

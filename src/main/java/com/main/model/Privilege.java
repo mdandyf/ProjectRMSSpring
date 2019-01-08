@@ -1,12 +1,12 @@
-package model;
+package com.main.model;
 
 import java.util.List;
 
-public class Role {
+public class Privilege {
     private Long id;
     private String name;
     private List<User> users;
-    private List<Privilege> privileges;
+    private List<Role> roles;
 
     public Long getId() {
         return id;
@@ -32,11 +32,11 @@ public class Role {
         this.users = users;
     }
 
-    public List<Privilege> getPrivileges() {
-        return privileges;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setPrivileges(List<Privilege> privileges) {
-        this.privileges = privileges;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

@@ -1,6 +1,6 @@
-package service;
+package com.main.service;
 
-import model.Privilege;
+import com.main.model.Privilege;
 
 public interface PrivilegeService {
     void savePrivilege(Privilege privilege);
