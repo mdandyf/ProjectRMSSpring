@@ -1,5 +1,6 @@
 package com.main.service;
 
+import com.main.exception.UserNotFoundException;
 import com.main.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         com.main.model.User user = userRepository.findByUserName(s);
+        if(user == null) {throw new UsernameNotFoundException("User not found by name: " + s);}
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), getAuthorities(user.getRoles()));
     }
 
