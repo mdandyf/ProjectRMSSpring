@@ -1,11 +1,22 @@
 package com.main.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "role")
 public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "role_name")
     private String name;
-    private List<User> users;
+
+    @ManyToMany
+    @JoinTable(name = "role_privilege",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "privilege_id"))
     private List<Privilege> privileges;
 
     public Long getId() {
@@ -22,14 +33,6 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public List<Privilege> getPrivileges() {

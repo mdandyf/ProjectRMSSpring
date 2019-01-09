@@ -1,11 +1,19 @@
 package com.main.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "privilege")
 public class Privilege {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "privilege_name")
     private String name;
-    private List<User> users;
+
+    @ManyToMany(mappedBy = "privileges")
     private List<Role> roles;
 
     public Long getId() {
@@ -22,14 +30,6 @@ public class Privilege {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public List<Role> getRoles() {

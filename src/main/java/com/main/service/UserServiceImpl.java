@@ -66,13 +66,7 @@ public class UserServiceImpl implements UserService {
         Set<String> setPrivilegeString = new HashSet<>();
         List<Privilege> listPrivilege = privilegeRepository.findAll();
         for(Privilege privilege : listPrivilege) {
-            List<User> users = privilege.getUsers();
-            for(User userDetail : users) {
-                if(userDetail.getUserName().equals(username)) {
-                    setPrivilegeString.add(privilege.getName());
-                    break;
-                }
-            }
+
         }
 
         userDetails.setListPrivileges(setPrivilegeString);
