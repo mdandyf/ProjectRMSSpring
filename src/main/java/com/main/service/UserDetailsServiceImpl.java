@@ -1,6 +1,7 @@
 package com.main.service;
 
 import com.main.exception.UserNotFoundException;
+import com.main.model.Privilege;
 import com.main.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.main.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,23 +26,31 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        com.main.model.User user = userRepository.findByUserName(s);
+        com.main.model.User user = userRepository.findByUsername(s);
         if(user == null) {throw new UsernameNotFoundException("User not found by name: " + s);}
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), getAuthorities(user.getRoles()));
+        org.springframework.security.core.userdetails.User userDetails = null;
+        try {
+            userDetails = new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), true, true, true, true, getAuthorities(user.getRole()));
+            System.out.println(userDetails.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userDetails ;
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(
-            Set<Role> roles) {
-        return getGrantedAuthorities(getPrivileges(roles));
+            Role role) {
+        return getGrantedAuthorities(getPrivileges(role));
     }
 
-    private List<String> getPrivileges(Set<Role> roles) {
-        List<String> privileges = roles.stream().
-                flatMap(role->role.getPrivileges().stream()).
-                map(privilege -> privilege.getName()).
-                collect(Collectors.toList());
+    private List<String> getPrivileges(Role role) {
+        List<String> privileges = new ArrayList<>();
+        for(Privilege privilege : role.getPrivileges()) {
+            privileges.add(privilege.getName());
+        }
         return privileges;
     }
 

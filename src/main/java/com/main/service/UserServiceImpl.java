@@ -11,10 +11,8 @@ import com.main.repository.RoleRepository;
 import com.main.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -26,8 +24,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl() {}
-
     @Override
     public void saveUser(User user, Long idRole) {
         try {
@@ -38,7 +34,7 @@ public class UserServiceImpl implements UserService {
             }else {
                 role = roleRepository.findById(idRole).get();
             }
-            user.setRoles(new HashSet<>(Arrays.asList(role)));
+            user.setRole(role);
             userRepository.save(user);
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,29 +43,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-       return userRepository.findByUserName(username);
+       return userRepository.findByUsername(username);
     }
 
     @Override
     public UserDetails getUserDetail(String username) {
-        User user = userRepository.findByUserName(username);
+        User user = userRepository.findByUsername(username);
         UserDetails userDetails = new UserDetails();
         userDetails.setUsername(user.getUserName());
 
-        Set<Role> setRoles = user.getRoles();
-        Set<String> setRoleString = new HashSet<>();
-        for(Role role : setRoles) {
-            setRoleString.add(role.getName());
-        }
-        userDetails.setListRoles(setRoleString);
+        Role role = user.getRole();
+        Set<String> setRole = new HashSet<>();
+        setRole.add(role.getName());
+        userDetails.setListRoles(setRole);
 
         Set<String> setPrivilegeString = new HashSet<>();
-        List<Privilege> listPrivilege = privilegeRepository.findAll();
-        for(Privilege privilege : listPrivilege) {
-
+        for(Privilege privilege : role.getPrivileges()) {
+            setPrivilegeString.add(privilege.getName());
         }
 
         userDetails.setListPrivileges(setPrivilegeString);
         return userDetails;
+    }
+
+    @Override
+    public List<UserDetails> getUserDetails() {
+
+        List<UserDetails> results = new ArrayList<>();
+        for(User user : userRepository.findAll()) {
+            results.add(getUserDetail(user.getUserName()));
+        }
+
+        return results;
     }
 }

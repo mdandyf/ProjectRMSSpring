@@ -1,11 +1,58 @@
-<html xmlns:th = "http://www.thymeleaf.org">
-    <head>
-        <title>List of Users</title>
+<html xmlns:th = "http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
 
-    </head>
-    <body>
-    <form th:action = "@{/logout}" method = "post" class="logoutLblPos">
-        <input type = "submit" value = "Sign Out"/>
-    </form>
-    </body>
+    <title>RMS</title>
+    <meta name="description" content="Index">
+    <meta name="author" content="Mitrais">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div style="padding-right: 10px" class="mdl-card__actions mdl-card--border">
+    <a th:href="@{/logout}" style="text-align: right">Logout</a>
+</div>
+<div class="mdl-layout mdl-js-layout mdl-color--grey-100 box-center">
+    <center>
+        <main class="mdl-layout__content">
+            <form th:action="@{/form}" method="GET">
+                <div class="mdl-card__actions mdl-card--border">
+                    <input type="submit" id="newButton" name="newButton" value="New" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"/>
+                </div>
+            </form>
+            <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">User Name</th>
+                    <th class="mdl-data-table__cell--non-numeric">Password</th>
+                    <th class="mdl-data-table__cell--non-numeric">Role</th>
+                    <th class="mdl-data-table__cell--non-numeric">Action</th>
+                </tr>
+                </thead>
+                <tbody th:each="user : ${users}" th:remove="tag">
+                <tr>
+                    <td th:text="${user.name}" class="mdl-data-table__cell--non-numeric"/>
+                    <td th:text="${user.password}" class="mdl-data-table__cell--non-numeric"/>
+                    <td th:text="${user.role}" class="mdl-data-table__cell--non-numeric"/>
+                    <td>
+                        <a th:href="@{/form}>" methods="POST">Edit</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a th:href="@{/delete}"  onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </main>
+    </center>
+</div>
+<script src="js/scripts.js"></script>
+
+</body>
 </html>

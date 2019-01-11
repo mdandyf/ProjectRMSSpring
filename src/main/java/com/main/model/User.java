@@ -1,7 +1,7 @@
 package com.main.model;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -12,12 +12,12 @@ public class User {
     private Long id;
 
     @Column(name = "username")
-    private String userName;
-    @Column(name = "userpass")
+    private String username;
+    @Column(name = "password")
     private String password;
 
-    @ManyToOne(targetEntity = Role.class)
-    private Set<Role> roles;
+    @ManyToOne(targetEntity = Role.class, cascade = CascadeType.PERSIST)
+    private Role role;
 
     public Long getId() {
         return id;
@@ -28,11 +28,11 @@ public class User {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public String getPassword() {
@@ -43,11 +43,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
