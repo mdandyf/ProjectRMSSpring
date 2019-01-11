@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch, HashRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from './App-login.jsx';
 import Login from './App-login.jsx';
 import List from './App-list.jsx';
@@ -11,9 +11,9 @@ ReactDOM.render((
 
     <Router>
         <div>
-            <Route path="/" Component={Home} />
-            <Route path={"/login"} component={Login} />
-            <Route path={"/home"} component={Home} />
+            <Route exact path="/" Component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/home" component={Home} />
             <Route path="/list" component={List} />
             <Route path="/form" component={Form} />
         </div>
