@@ -10,6 +10,7 @@ import com.main.repository.PrivilegeRepository;
 import com.main.repository.RoleRepository;
 import com.main.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Transactional
     @Override
     public void saveUser(User user, Long idRole) {
         try {
@@ -41,11 +43,26 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public User findByUsername(String username) {
        return userRepository.findByUsername(username);
     }
 
+    @Transactional
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).get();
+    }
+
+    @Transactional
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+
+    @Transactional
     @Override
     public UserDetails getUserDetail(String username) {
         User user = userRepository.findByUsername(username);
@@ -66,6 +83,7 @@ public class UserServiceImpl implements UserService {
         return userDetails;
     }
 
+    @Transactional
     @Override
     public List<UserDetails> getUserDetails() {
 

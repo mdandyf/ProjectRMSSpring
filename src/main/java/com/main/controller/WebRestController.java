@@ -3,19 +3,15 @@ package com.main.controller;
 import com.main.model.Privilege;
 import com.main.model.Role;
 import com.main.model.User;
-import com.main.model.UserDetails;
 import com.main.repository.UserRepository;
 import com.main.service.PrivilegeService;
 import com.main.service.RoleService;
 import com.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.websocket.server.PathParam;
-import java.util.*;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class WebRestController {
@@ -24,45 +20,59 @@ public class WebRestController {
     UserService userService;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     RoleService roleService;
 
     @Autowired
     PrivilegeService privilegeService;
 
-    @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
+    //@PreAuthorize("hasAuthority('EDIT_PRIVILEGE')")
+    @RequestMapping(value = "/list/user/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getUserById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
+    }
+
+    //@PreAuthorize("hasAuthority('READ_PRIVILEGE')")
     @RequestMapping(value = "/list/users", method = RequestMethod.GET)
-    public Collection<User> getListUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<Object> getListUsers() {
+        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('EDIT_PRIVILEGE')")
+    //@PreAuthorize("hasAuthority('EDIT_PRIVILEGE')")
     @RequestMapping(value = "/list/details", method = RequestMethod.GET)
-    public Collection<UserDetails> getListDetails() {
-        return userService.getUserDetails();
+    public ResponseEntity<Object> getListDetails() {
+        return new ResponseEntity<>(userService.getUserDetails(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('EDIT_PRIVILEGE')")
+    //@PreAuthorize("hasAuthority('EDIT_PRIVILEGE')")
     @RequestMapping(value = "/list/roles/{id}", method = RequestMethod.GET)
-    public Role getUserRoles(@PathParam("id") Long id) {
-        return userRepository.findById(id).get().getRole();
+    public ResponseEntity<Object> getUserRole(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(userService.findById(id).getRole(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('EDIT_PRIVILEGE')")
+    //@PreAuthorize("hasAuthority('EDIT_PRIVILEGE')")
     @RequestMapping(value = "/list/privileges/{id}", method = RequestMethod.GET)
-    public Collection<Privilege> getUserPrivileges(@PathParam("id") Long id) { return userRepository.findById(id).get().getRole().getPrivileges(); }
+    public ResponseEntity<Object> getUserPrivileges(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(userService.findById(id).getRole().getPrivileges(), HttpStatus.OK);
+    }
 
-    @PreAuthorize("hasAnyAuthority('NEW_PRIVILEGE')")
+    //@PreAuthorize("hasAnyAuthority('NEW_PRIVILEGE')")
     @RequestMapping(value = "/save-user", method = RequestMethod.POST)
-    public void saveUser(@PathParam("user") User user) { userRepository.save(user); }
+    public ResponseEntity<Object> saveUser(@RequestBody User user) {
+        userService.saveUser(user, user.getId());
+        return new ResponseEntity<>("User has been saved", HttpStatus.CREATED);
+    }
 
-    @PreAuthorize("hasAnyAuthority('NEW_PRIVILEGE')")
+    //@PreAuthorize("hasAnyAuthority('NEW_PRIVILEGE')")
     @RequestMapping(value = "/save-role", method = RequestMethod.POST)
-    public void saveRole(@PathParam("role") Role role) { roleService.saveRole(role); }
+    public ResponseEntity<Object> saveRole(@RequestBody Role role) {
+        roleService.saveRole(role);
+        return new ResponseEntity<>("Role has been saved", HttpStatus.CREATED);
+    }
 
-    @PreAuthorize("hasAnyAuthority('NEW_PRIVILEGE')")
+    //@PreAuthorize("hasAnyAuthority('NEW_PRIVILEGE')")
     @RequestMapping(value = "/save-privilege", method = RequestMethod.POST)
-    public void saveRole(@PathParam("privilege") Privilege privilege) { privilegeService.savePrivilege(privilege); }
+    public ResponseEntity<Object> saveRole(@RequestBody Privilege privilege) {
+        privilegeService.savePrivilege(privilege);
+        return new ResponseEntity<>("Privilege has been saved", HttpStatus.CREATED);
+    }
 }
