@@ -1,5 +1,7 @@
 package com.main.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,12 +13,15 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
+    private String name;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
     private String password;
 
     @ManyToOne(targetEntity = Role.class, cascade = CascadeType.PERSIST)
+    @JsonBackReference
     private Role role;
 
     public Long getId() {
@@ -25,6 +30,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUserName() {

@@ -1,5 +1,8 @@
 package com.main.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,7 +16,8 @@ public class Privilege {
     @Column(name = "privilege_name")
     private String name;
 
-    @ManyToMany(mappedBy = "privileges")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "privileges")
+    @JsonBackReference
     private List<Role> roles;
 
     public Long getId() {

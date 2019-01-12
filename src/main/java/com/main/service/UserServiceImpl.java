@@ -43,13 +43,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
     @Override
     public User findByUsername(String username) {
        return userRepository.findByUsername(username);
     }
 
-    @Transactional
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).get();
@@ -57,10 +55,29 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    public Role findUserRole(Long id) { return userRepository.findById(id).get().getRole(); }
+
+    @Transactional
+    @Override
+    public List<Privilege> findUserPrivileges(Long id) { return userRepository.findById(id).get().getRole().getPrivileges();}
+
+
+    @Transactional
+    @Override
+    public List<UserDetails> getUserDetails() {
+
+        List<UserDetails> results = new ArrayList<>();
+        for(User user : userRepository.findAll()) {
+            results.add(getUserDetail(user.getUserName()));
+        }
+
+        return results;
+    }
+
+    @Override
     public List<User> getUsers() {
         return userRepository.findAll();
     }
-
 
     @Transactional
     @Override
@@ -81,17 +98,5 @@ public class UserServiceImpl implements UserService {
 
         userDetails.setListPrivileges(setPrivilegeString);
         return userDetails;
-    }
-
-    @Transactional
-    @Override
-    public List<UserDetails> getUserDetails() {
-
-        List<UserDetails> results = new ArrayList<>();
-        for(User user : userRepository.findAll()) {
-            results.add(getUserDetail(user.getUserName()));
-        }
-
-        return results;
     }
 }
