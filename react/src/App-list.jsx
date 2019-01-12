@@ -1,13 +1,31 @@
 import React from 'react';
-import { Table, Panel, Button, Navbar } from 'react-bootstrap';
+import { Table, Panel, Button, Image, Navbar } from 'react-bootstrap';
 import "./list.css";
 
 class List extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            users: [],
+            isLoading: false,
+            userLogin: "Mark Geiger"
+        }
+    }
+
+    componentDidMount() {
+        this.setState({ isLoading: true });
+
+        fetch('http://localhost:8080/list/users')
+            .then(response => { return response.json(); })
+            .then(data => this.setState({ users: data, isLoading: false, userDetails: [] }));
+    }
+
+
     render() {
         return (
             <div className="container">
-                <Header />
-                <Content />
+                <Header myUserLogin={this.state.userLogin}/>
+                <ContentList myUser={this.state.users} myLoading={this.state.myLoading} />
             </div>
         );
     }
@@ -15,6 +33,7 @@ class List extends React.Component {
 
 class Header extends React.Component {
     render() {
+        const userLogin = this.props.myUserLogin;
         return (
             <Navbar inverse={true}>
                 <Navbar.Header>
@@ -24,7 +43,7 @@ class Header extends React.Component {
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Navbar.Text pullRight>
-                        Signed in as: <Navbar.Link href="#">Mark Otto</Navbar.Link>
+                        Signed in as: <Navbar.Link href="#">{userLogin}</Navbar.Link>
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Navbar>
@@ -32,8 +51,15 @@ class Header extends React.Component {
     }
 }
 
-class Content extends React.Component {
+class ContentList extends React.Component {
     render() {
+        const users = this.props.myUser.map(user => <User key={user.id} user={user} />)
+        const isLoading = this.props.myLoading;
+        
+        if (isLoading) {
+            return <p>Loading...</p>;
+        }
+
         return (
             <Panel>
                 <Panel.Body>
@@ -46,47 +72,33 @@ class Content extends React.Component {
                                     <th>Name</th>
                                     <th>User Name</th>
                                     <th>Password</th>
-                                    <th>Role</th>
-                                    <th>Previlege</th>
                                     <th colSpan="2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark Geiger</td>
-                                    <td>mark.geiger@mitrais.com</td>
-                                    <td>1234</td>
-                                    <td>USER</td>
-                                    <td>READ</td>
-                                    <td><Button className="buttonEdit" bsStyle="info">Edit</Button></td>
-                                    <td><Button className="buttonDelete" bsStyle="danger">Delete</Button></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Mark Geiger</td>
-                                    <td>mark.geiger@mitrais.com</td>
-                                    <td>1234</td>
-                                    <td>USER</td>
-                                    <td>READ</td>
-                                    <td><Button className="buttonEdit" bsStyle="info">Edit</Button></td>
-                                    <td><Button className="buttonDelete" bsStyle="danger">Delete</Button></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Mark Geiger</td>
-                                    <td>mark.geiger@mitrais.com</td>
-                                    <td>1234</td>
-                                    <td>USER</td>
-                                    <td>READ</td>
-                                    <td><Button className="buttonEdit" bsStyle="info">Edit</Button></td>
-                                    <td><Button className="buttonDelete" bsStyle="danger">Delete</Button></td>
-                                </tr>
+                                {users}
                             </tbody>
                         </Table>
                     </div>
                 </Panel.Body>
             </Panel>
+        );
+    }
+}
+
+class User extends React.Component {
+    render() {
+        return (
+            <tr>
+                <td>{this.props.user.id}</td>
+                <td>{this.props.user.name}</td>
+                <td>{this.props.user.userName}</td>
+                <td><input className="hidetext" size={80} type="password" value= {this.props.user.password} readOnly={true}/></td>
+                <td>
+                    <Image rounded src="./img/pencil.png"></Image>
+                </td>
+                <td><Button id={this.props.user.id} className="buttonDelete" bsStyle="danger">Delete</Button></td>
+            </tr>
         );
     }
 }
