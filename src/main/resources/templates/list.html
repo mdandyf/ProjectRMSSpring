@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="static/public/css/list.css">
     <title>User Details</title>
-    <nav class="navbar fixed-top navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">PT. XYZ</a>
-    </nav>
 </head>
 <body>
 <div class="container-fluid">
@@ -22,7 +19,10 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item" >
+                <li class="nav-item active">
+                    <a class="nav-link" href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" th:href="@{/logout}">Logout</a>
                 </li>
             </ul>

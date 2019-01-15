@@ -17,6 +17,9 @@ public class WebMainController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() { return "login"; }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout() { return "login"; }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String postLogin() { return "list"; }
 
@@ -26,7 +29,15 @@ public class WebMainController {
     @RequestMapping(value = "/add-user", method = RequestMethod.GET)
     public String addUser() { return "form"; }
 
+    @RequestMapping(value = "/add-user", method = RequestMethod.POST)
+    public String addUserPost() { return "list"; }
 
+    @RequestMapping(value = "/update-user", method = RequestMethod.GET)
+    public String updateUser() { return "form"; }
 
+    @RequestMapping(value = "/update-user", method = RequestMethod.POST)
+    public String updateUserPost() { return "list"; }
 
+    @RequestMapping(value = "/delete-user", method = RequestMethod.POST)
+    public String deleteUser() {return "list";}
 }
