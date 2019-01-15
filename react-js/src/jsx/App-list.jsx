@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Panel, Button, Image, Navbar } from 'react-bootstrap';
+import { Table, Panel, Button, Nav, Navbar, NavItem } from 'react-bootstrap';
 import "../css/list.css";
 
 class List extends React.Component {
@@ -24,7 +24,7 @@ class List extends React.Component {
     render() {
         return (
             <div className="container">
-                <Header myUserLogin={this.state.userLogin}/>
+                <Header myUserLogin={this.state.userLogin} />
                 <ContentList myUser={this.state.users} myLoading={this.state.myLoading} />
             </div>
         );
@@ -41,6 +41,14 @@ class Header extends React.Component {
                         <a href="#home">PT. XYZ - RMS</a>
                     </Navbar.Brand>
                 </Navbar.Header>
+                <Nav pullRight>
+                    <NavItem eventKey={1}>
+
+                    </NavItem>
+                    <NavItem eventKey={2} href="#">
+                        Logout
+                    </NavItem>
+                </Nav>
                 <Navbar.Collapse>
                     <Navbar.Text pullRight>
                         Signed in as: <Navbar.Link href="#">{userLogin}</Navbar.Link>
@@ -55,7 +63,7 @@ class ContentList extends React.Component {
     render() {
         const users = this.props.myUser.map(user => <User key={user.id} user={user} />)
         const isLoading = this.props.myLoading;
-        
+
         if (isLoading) {
             return <p>Loading...</p>;
         }
@@ -93,14 +101,14 @@ class User extends React.Component {
                 <td>{this.props.user.id}</td>
                 <td>{this.props.user.name}</td>
                 <td>{this.props.user.userName}</td>
-                <td><input className="hidetext" size={80} type="password" value= {this.props.user.password} readOnly={true}/></td>
+                <td><input className="hidetext" size={80} type="password" value={this.props.user.password} readOnly={true} /></td>
                 <td>
-                    <Image id={this.props.user.id} rounded src="./img/pencil.png"></Image>
-                    {/* <Button id={this.props.user.id} className="buttonEdit" bsStyle="primary">Edit</Button> */}
+                    {/* <Image id={this.props.user.id} rounded src="./img/pencil.png"></Image> */}
+                    <Button id={this.props.user.id} className="buttonEdit" bsStyle="primary">Edit</Button>
                 </td>
                 <td>
-                    <Image id={this.props.user.id} rounded src="./img/trash.png"></Image>
-                    {/* <Button id={this.props.user.id} className="buttonDelete" bsStyle="danger">Delete</Button> */}
+                    {/* <Image id={this.props.user.id} rounded src="./img/trash.png"></Image> */}
+                    <Button id={this.props.user.id} className="buttonDelete" bsStyle="danger">Delete</Button>
                 </td>
             </tr>
         );

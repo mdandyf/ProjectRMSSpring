@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 const params = new URLSearchParams(window.location.search)
 
-ReactDOM.render(<Login {...props} error={params.get('error')} />, document.getElementById('login'));
+ReactDOM.render(<Login onLogin={this.props.onLogin} />, document.getElementById('login'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

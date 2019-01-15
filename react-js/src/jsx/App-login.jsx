@@ -1,6 +1,8 @@
 import React from 'react';
-import { FormGroup, FormControl, ControlLabel, Button, Navbar } from 'react-bootstrap';
+import { Navbar, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { getLogin } from '../js/api';
 import "../css/login.css";
+import { ACCESS_TOKEN } from '../js/constants';
 
 class Login extends React.Component {
     constructor(props) {
@@ -11,16 +13,7 @@ class Login extends React.Component {
             password: ""
         };
 
-        this.handleChange = this.handleChange.bind(this);
-
-        if (props.error) {
-            this.state = {
-                failure: "Wrong username or password!",
-                errcount: 0
-            }
-        } else {
-            this.state = { errcount: 0 }
-        }
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     validateForm() {
@@ -35,50 +28,36 @@ class Login extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        if (!this.state.errcount) {
-            const data = new FormData(this.state.username, this.state.password);
-            fetch('http://localhost:8080/login', {
-                method: "POST",
-                body: new URLSearchParams(data)
-            }).then(v => {
-                if (v.redirected) window.location = "http://localhost:3000/list"
+        const loginRequest = Object.assign({}, {username: this.state.username, password: this.state.password});
+        console.log(loginRequest);
+        getLogin(loginRequest)
+            .then(response => {
+                console.log("result of response: " + response);
+                localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                this.props.onLogin();
+            }).catch(error => {
+                if (error.status === 401) {
+                    alert('Your Username or Password is incorrect. Please try again!');
+                } else {
+                    alert('Sorry! Something went wrong. Please try again!');
+                }
             })
-                .catch(e => console.warn(e))
-        }
-    }
-
-    handleError = (field, errmsg) => {
-        if (!field) return;
-
-        if (errmsg) {
-            this.setState((prevState) => ({
-                failure: '',
-                errcount: prevState.errcount + 1,
-                errmsgs: { ...prevState.errmsgs, [field]: errmsg }
-            }))
-        } else {
-            this.setState((prevState) => ({
-                failure: '',
-                errcount: prevState.errcount === 1 ? 0 : prevState.errcount - 1,
-                errmsgs: { ...prevState.errmsgs, [field]: '' }
-            }))
-        }
-    }
+    };
 
     render() {
         return (
             <div className="container">
                 <Content myUsernameProp={this.state.username} myPasswordProp={this.state.password}
                     mySubmitProp={this.handleSubmit} myChangeProp={this.handleChange}
-                    myValidationProp={this.validateForm} myErrorProp={this.handleError} />
+                    myValidationProp={this.validateForm} />
             </div>
         );
     }
 }
 
+
 class Content extends React.Component {
     render() {
-        const params = new URLSearchParams(window.location.search)
         return (
             <div className="Login">
                 <Navbar inverse={true}>
@@ -88,33 +67,33 @@ class Content extends React.Component {
                         </Navbar.Brand>
                     </Navbar.Header>
                 </Navbar>
-                <form error={params.get('error')} onSubmit={this.props.mySubmitProp}>
-                    <FormGroup controlId="username" bsSize="large">
-                        <ControlLabel>User Name</ControlLabel>
-                        <FormControl
-                            autoFocus
-                            type="username"
-                            value={this.props.myUsernameProp}
-                            onChange={this.props.myChangeProp}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="password" bsSize="large">
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            value={this.props.myPasswordProp}
-                            onChange={this.props.myChangeProp}
-                            type="password"
-                        />
-                    </FormGroup>
-                    <Button
-                        bsStyle="primary"
-                        block
-                        bsSize="large"
-                        disabled={!this.props.myValidationProp}
-                        type="submit">
-                        Login
+                <form onSubmit={this.props.mySubmitProp}>
+                <FormGroup controlId="username" bsSize="large">
+                    <ControlLabel>User Name</ControlLabel>
+                    <FormControl
+                        autoFocus
+                        type="username"
+                        value={this.props.myUsernameProp}
+                        onChange={this.props.myChangeProp}
+                    />
+                </FormGroup>
+                <FormGroup controlId="password" bsSize="large">
+                    <ControlLabel>Password</ControlLabel>
+                    <FormControl
+                        value={this.props.myPasswordProp}
+                        onChange={this.props.myChangeProp}
+                        type="password"
+                    />
+                </FormGroup>
+                <Button
+                    id="buttonSubmit"
+                    bsStyle="primary"
+                    block
+                    bsSize="large"
+                    type="submit">
+                    Login
                 </Button>
-                </form>
+            </form>
             </div>
         );
     }

@@ -1,6 +1,6 @@
-@media all and (min-width: 480px) {
+@media all and (min-width: 720px) {
     .Login {
-      padding: 60px 0;
+      padding: 30px 0;
     }
   
     .Login form {
@@ -12,5 +12,15 @@
         margin: 0 auto;
         margin-bottom: 10px;
         max-width: 320px;
+    }
+
+    .login-form {
+      max-width: 480px;
+    }
+    .login-form-forgot {
+      float: right;
+    }
+    .login-form-button {
+      width: 100%;
     }
   }
