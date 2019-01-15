@@ -33,14 +33,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().configurationSource(getConfigCors())
-                .and()
                 .authorizeRequests()
                 .antMatchers("/", "/home", "/public/**", "/react/**", "/list/**").permitAll()
                 .antMatchers("/private/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
+                .cors().configurationSource(getConfigCors())
+                .and()
                 .formLogin()
+                .loginPage("/login")
+                .successForwardUrl("/list")
                 .permitAll()
                 .and()
                 .logout()

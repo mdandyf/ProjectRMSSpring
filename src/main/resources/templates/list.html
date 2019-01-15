@@ -1,58 +1,62 @@
-<html xmlns:th = "http://www.thymeleaf.org" lang="en">
+<html lang="en"  xmlns:th = "http://www.thymeleaf.org">
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>RMS</title>
-    <meta name="description" content="Index">
-    <meta name="author" content="Mitrais">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-
-    <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-    <![endif]-->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/public/css/list.css">
+    <title>User Details</title>
+    <nav class="navbar fixed-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">PT. XYZ</a>
+    </nav>
 </head>
-
 <body>
-<div style="padding-right: 10px" class="mdl-card__actions mdl-card--border">
-    <a th:href="@{/logout}" style="text-align: right">Logout</a>
-</div>
-<div class="mdl-layout mdl-js-layout mdl-color--grey-100 box-center">
-    <center>
-        <main class="mdl-layout__content">
-            <form th:action="@{/form}" method="GET">
-                <div class="mdl-card__actions mdl-card--border">
-                    <input type="submit" id="newButton" name="newButton" value="New" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"/>
-                </div>
-            </form>
-            <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">PT XYZ</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" >
+                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col-7">
+            <table class="table">
                 <thead>
                 <tr>
-                    <th class="mdl-data-table__cell--non-numeric">User Name</th>
-                    <th class="mdl-data-table__cell--non-numeric">Password</th>
-                    <th class="mdl-data-table__cell--non-numeric">Role</th>
-                    <th class="mdl-data-table__cell--non-numeric">Action</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
-                <tbody th:each="user : ${users}" th:remove="tag">
-                <tr>
-                    <td th:text="${user.name}" class="mdl-data-table__cell--non-numeric"/>
-                    <td th:text="${user.password}" class="mdl-data-table__cell--non-numeric"/>
-                    <td th:text="${user.role}" class="mdl-data-table__cell--non-numeric"/>
-                    <td>
-                        <a th:href="@{/form}>" methods="POST">Edit</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a th:href="@{/delete}"  onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
-                </tr>
+                <tbody>
+                    <td></td>
                 </tbody>
             </table>
-        </main>
-    </center>
-</div>
-<script src="js/scripts.js"></script>
+        </div>
+        <div class="col">
 
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
