@@ -26,14 +26,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
                 .addResourceLocations("/react/build/list.html");
     }*/
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/");
-    }
-
-    @Override
+    /*@Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/home").setViewName("home");
         registry.addViewController("/").setViewName("home");
@@ -41,4 +34,11 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/list").setViewName("list");
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+    }*/
 }

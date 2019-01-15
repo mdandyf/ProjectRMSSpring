@@ -34,8 +34,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/public/**", "/react/**", "/list/**").permitAll()
-                .antMatchers("/private/**").authenticated()
+                .antMatchers("/", "/home", "/public/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors().configurationSource(getConfigCors())
