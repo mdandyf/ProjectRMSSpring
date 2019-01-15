@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormGroup, Button, Modal, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
-import "./list.css";
 
 function FieldGroup({ id, label, help, ...props }) {
     return (
@@ -12,7 +11,7 @@ function FieldGroup({ id, label, help, ...props }) {
     );
   }
 
-class App extends React.Component {
+class Form extends React.Component {
     render() {
         return (
             <div className="static-modal">
@@ -38,7 +37,6 @@ class App extends React.Component {
 
                         </form>
                     </Modal.Body>
-
                     <Modal.Footer>
                         <Button>Close</Button>
                         <Button bsStyle="primary">Save changes</Button>
@@ -49,4 +47,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default Form;
