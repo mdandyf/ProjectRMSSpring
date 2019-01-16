@@ -6,7 +6,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="static/public/css/list.css">
+    <link rel="stylesheet" href="/.../.../public/css/list.css" th:href="@{../css/list.css}">
     <title>User Details</title>
 </head>
 <body>
@@ -45,7 +45,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <td></td>
+                <tr th:each="user: ${users}">
+                    <td><span th:text="${user.id}"/> </td>
+                    <td><span th:text="${user.name}"/> </td>
+                    <td><span th:text="${user.userName}"/></td>
+                    <td><span style="-webkit-text-security: circle" th:text="${user.password}"/></td>
+                    <td>
+                        <a th:href="@{/update-user/} + ${user.id}">Edit</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a th:href="@{/delete-user/} + ${user.id}">Delete</a>
+                    </td>
+                </tr>
+
                 </tbody>
             </table>
         </div>

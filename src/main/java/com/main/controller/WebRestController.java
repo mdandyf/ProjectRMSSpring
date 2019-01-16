@@ -80,4 +80,13 @@ public class WebRestController {
         privilegeService.savePrivilege(privilege);
         return new ResponseEntity<>("Privilege has been saved", HttpStatus.CREATED);
     }
+
+    @PreAuthorize("hasAnyAuthority('DELETE_PRIVILEGE')")
+    @RequestMapping(value = "/delete-user/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Object> deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>("User has been deleted", HttpStatus.OK);
+    }
+
+
 }

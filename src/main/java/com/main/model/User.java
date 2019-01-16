@@ -1,8 +1,10 @@
 package com.main.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -15,8 +17,10 @@ public class User {
 
     @Column(name = "name")
     private String name;
+
     @Column(name = "username")
     private String username;
+
     @Column(name = "password")
     private String password;
 
