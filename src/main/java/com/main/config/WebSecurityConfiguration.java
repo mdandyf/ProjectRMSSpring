@@ -1,6 +1,5 @@
 package com.main.config;
 
-import com.main.handler.SimpleUrlAuthenticatorSuccessHandler;
 import com.main.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,13 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -36,11 +32,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+      /*  http
                 .authorizeRequests()
                 .antMatchers("/", "/home",
                         "/public/**", "/css/**", "/js/**",
                         "/bootstrap/**").permitAll()
+                .antMatchers("/main/**", "/rest/**").fullyAuthenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -51,40 +48,34 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .deleteCookies("JSESSIONID")
-                .permitAll();
+                .permitAll();*/
 
-       /* http
+        http
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/public/**").permitAll()
+                .antMatchers("/", "/home", "/authentication",
+                        "/public/**", "/css/**", "/js/**",
+                        "/bootstrap/**").permitAll()
+                .antMatchers("/main/**", "/rest/**").fullyAuthenticated()
                 .anyRequest().authenticated()
                 .and()
                 .cors().configurationSource(getConfigCors())
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .successForwardUrl("/list")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();*/
+                .httpBasic().and().
+                csrf().disable();
     }
 
-    /*@Bean
+    @Bean
     public CorsConfigurationSource getConfigCors() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type",
+                                                        "x-auth-token"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }*/
-
-    /*@Bean
-    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
-        return new SimpleUrlAuthenticationSuccessHandler();
-    }*/
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

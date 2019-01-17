@@ -1,6 +1,5 @@
 package com.main.service;
 
-import com.main.exception.UserNotFoundException;
 import com.main.model.Privilege;
 import com.main.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         org.springframework.security.core.userdetails.User userDetails = null;
         try {
             userDetails = new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), true, true, true, true, getAuthorities(user.getRole()));
-            System.out.println(userDetails.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
