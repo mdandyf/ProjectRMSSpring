@@ -1,4 +1,5 @@
 export const API_BASE_URL = 'http://localhost:8080/';
+export const REST_API_URL = 'rest/';
 export const ACCESS_TOKEN = 'accessToken';
 
 export const NAME_MIN_LENGTH = 4;

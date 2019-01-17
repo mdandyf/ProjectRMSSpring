@@ -1,16 +1,17 @@
-import { API_BASE_URL, ACCESS_TOKEN } from './constants';
+import { API_BASE_URL, REST_API_URL, ACCESS_TOKEN } from './constants';
 
 const request = (options) => {
-    const headers = new Headers({
+    const headers = {
         'Content-Type': 'application/json',
-    })
-    
-    if(localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+        'Authorization': 'Basic ' + options.head,
+        'credentials' : 'same-origin'  
     }
 
-    const defaults = {headers: headers};
+    const defaults = {headers: JSON.stringify(headers)};
+
     options = Object.assign({}, defaults, options);
+
+    console.log(options.url, options);
 
     return fetch(options.url, options)
     .then(response => 
@@ -20,7 +21,7 @@ const request = (options) => {
             }
             return json;
         })
-    );
+    ).catch(error => console.log(error));
 };
 
 export function getCurrentUser(id) {
@@ -29,15 +30,15 @@ export function getCurrentUser(id) {
     }
 
     return request({
-        url: API_BASE_URL + "user/{" + id + "}",
+        url: API_BASE_URL + REST_API_URL + "list/user/{" + id + "}",
         method: 'GET'
     });
 }
 
 export function getLogin(loginRequest) {
     return request({
-        url: API_BASE_URL + "auth/login",
-        method: 'POST',
-        body: JSON.stringify(loginRequest)
+        url: API_BASE_URL + REST_API_URL + "auth",
+        method: 'GET',
+        head: new Buffer(loginRequest).toString("base64")
     });
 }

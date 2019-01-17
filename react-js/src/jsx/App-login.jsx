@@ -28,7 +28,7 @@ class Login extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        const loginRequest = Object.assign({}, {username: this.state.username, password: this.state.password});
+        const loginRequest = this.state.username + ':' + this.state.password; 
         console.log(loginRequest);
         getLogin(loginRequest)
             .then(response => {
