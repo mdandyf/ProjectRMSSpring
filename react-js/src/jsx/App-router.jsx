@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Login from './App-login.jsx';
 import List from './App-list.jsx';
 import Form from './App-form.jsx';
@@ -41,7 +41,9 @@ class Routing extends React.Component {
       }
     
       componentDidMount() {
-        this.loadCurrentUser();
+          if(this.state.isAuthenticated) {
+            this.loadCurrentUser();
+          }
       }
 
       handleLogin() {
@@ -74,8 +76,8 @@ class Routing extends React.Component {
         }
 
         return(
-            <Router>
-            <div>
+            <BrowserRouter>
+            <Switch>
                 <Route exact path="/" render={() => (<Redirect to="/home"/>)}/>
                 <Route path="/login" render = {(props) => <Login onLogin={this.handleLogin} {...props}/>}/>
                 <Route path="/home" render = {(props) => <Login onLogin={this.handleLogin} {...props}/>}/>
@@ -84,8 +86,8 @@ class Routing extends React.Component {
                     currentUser={this.state.currentUser} component={List}/>
                 <PrivateRoute path="/form" authenticated={this.state.isAuthenticated} 
                     handleLogout={this.handleLogout} component={Form} />
-            </div>
-        </Router>
+            </Switch>
+        </BrowserRouter>
         );
     }
 }

@@ -27,8 +27,7 @@ public class WebRestController {
     @Autowired
     UserDetailsService userDetailsService;
 
-    @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
-    @RequestMapping(value = "/rest/auth", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/auth")
     public ResponseEntity<Object> authenticate() {
         return new ResponseEntity<>("User is authorized", HttpStatus.OK);
     }
@@ -38,6 +37,13 @@ public class WebRestController {
     public ResponseEntity<Object> getUserById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
+    @RequestMapping(value = "/rest/list/user/{username}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getUserById(@PathVariable("username") String userName) {
+        return new ResponseEntity<>(userService.findByUsername(userName), HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
     @RequestMapping(value = "/rest/list/users", method = RequestMethod.GET)

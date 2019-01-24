@@ -29,18 +29,16 @@ class Login extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         const loginRequest = this.state.username + ':' + this.state.password; 
-        console.log(loginRequest);
         getLogin(loginRequest)
             .then(response => {
-                console.log("result of response: " + response);
-                localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-                this.props.onLogin();
-            }).catch(error => {
-                if (error.status === 401) {
+                if(response.status === 200) {
+                    localStorage.setItem(ACCESS_TOKEN, new Buffer(loginRequest).toString("base64"));
+                    this.props.onLogin();
+                } else  if (response.status === 401) {
                     alert('Your Username or Password is incorrect. Please try again!');
                 } else {
                     alert('Sorry! Something went wrong. Please try again!');
-                }
+                }   
             })
     };
 
