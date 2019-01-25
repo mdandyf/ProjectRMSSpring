@@ -1,6 +1,9 @@
 package com.main.config;
 
 import com.main.service.UserDetailsServiceImpl;
+
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,24 +18,22 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    public BCryptPasswordEncoder passwordEncoder;
+  @Autowired
+  public BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder);
-    }
+  @Autowired
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder);
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-      /*  http
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    /*  http
                 .authorizeRequests()
                 .antMatchers("/", "/home",
                         "/public/**", "/css/**", "/js/**",
@@ -50,40 +51,42 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
                 .permitAll();*/
 
-        http
-                .authorizeRequests()
-                .antMatchers("/", "/home", "/authentication",
-                        "/public/**", "/css/**", "/js/**",
-                        "/bootstrap/**").permitAll()
-                .antMatchers("/main/**", "/rest/**").fullyAuthenticated()
-                .anyRequest().authenticated()
-                .and()
-                .cors().configurationSource(getConfigCors())
-                .and()
-                .httpBasic().and().
-                csrf().disable();
-    }
+    http
+        .authorizeRequests()
+        .antMatchers("/", "/home", "/authentication",
+            "/public/**", "/css/**", "/js/**",
+            "/bootstrap/**").permitAll()
+        .antMatchers("/main/**", "/rest/**").fullyAuthenticated()
+        .anyRequest().authenticated()
+        .and()
+        .cors().configurationSource(getConfigCors())
+        .and()
+        .httpBasic()
+        .and()
+        .csrf().disable();
+  }
 
-    @Bean
-    public CorsConfigurationSource getConfigCors() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type",
-                                                            "x-auth-token"));
-        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+  @Bean
+  public CorsConfigurationSource getConfigCors() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE",
+        "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type",
+        "x-auth-token"));
+    configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
-    }
+  @Bean
+  public UserDetailsService userDetailsService() {
+    return new UserDetailsServiceImpl();
+  }
 }
