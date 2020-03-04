@@ -39,19 +39,19 @@ public class WebRestController {
   }
 
   @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
-  @RequestMapping(value = "/rest/list/user/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/rest/user/id/{id}", method = RequestMethod.GET)
   public ResponseEntity<Object> getUserById(@PathVariable("id") Long id) {
     return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
   }
 
   @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
-  @RequestMapping(value = "/rest/list/user/{username}", method = RequestMethod.GET)
+  @RequestMapping(value = "/rest/user/{username}", method = RequestMethod.GET)
   public ResponseEntity<Object> getUserById(@PathVariable("username") String userName) {
     return new ResponseEntity<>(userService.findByUsername(userName), HttpStatus.OK);
   }
 
 
-  @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
+  @PreAuthorize("hasAuthority('EDIT_PRIVILEGE')")
   @RequestMapping(value = "/rest/list/users", method = RequestMethod.GET)
   public ResponseEntity<Object> getListUsers() {
     return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);

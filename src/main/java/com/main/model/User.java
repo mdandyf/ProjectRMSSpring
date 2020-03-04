@@ -1,6 +1,7 @@
 package com.main.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,6 +27,7 @@ public class User {
   private String username;
 
   @Column(name = "password")
+  @JsonIgnore
   private String password;
 
   @ManyToOne(targetEntity = Role.class, cascade = CascadeType.PERSIST)
